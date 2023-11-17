@@ -1,0 +1,6 @@
+[AIL]
+feeder_uuid = "6c5d0ce9-5c29-4d34-86f6-b6Ec22473082"
+url = https://127.0.0.1:7000
+apikey = "<YOURAPIKEY>"
+verifycert = False
+ail_feeder = True
