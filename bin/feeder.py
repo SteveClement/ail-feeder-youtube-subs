@@ -10,6 +10,7 @@ from urllib.parse import parse_qs, urlparse
 
 from pyail import PyAIL
 from pytube import YouTube
+import download_youtube_subtitle.main as dys
 
 # ConfigParser
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -58,7 +59,6 @@ def extractMeta(video):
 
     try:
         video.check_availability()
-        print("Availability : ", video.check_availability())
     except Exception as e:
         print(f"Video ID {e}")
         exit(-1)
@@ -75,27 +75,28 @@ def extractMeta(video):
     if verbose:
         print("[+] Extract Metadata")
 
-    # 'from_id', 'js', 'js_url', 'register_on_complete_callback', 'register_on_progress_callback', 'stream_monostate', 'streaming_data', 'streams', 'use_oauth', 'video_id', 'watch_html', 'watch_url']
     print("Title : ",video.title)
+    print("Author : ", video.author)
+    print("Description : ", video.description)
     print("Total Length : ",video.length," Seconds")
     print("Total Views : ",video.views)
+    print("Publish date : ", video.publish_date)
     print("Is Age Restricted : ",video.age_restricted)
-    #print("Video Rating ",round(video.rating))
-    print("Video Rating : ",video.rating)
     print("Thumbnail Url : ",video.thumbnail_url)
-    print("Author : ", video.author)
-    print("Captions : ", video.captions)
-    print("Caption tracks : ", video.caption_tracks)
     print("Channel ID : ", video.channel_id)
     print("Channel URL : ", video.channel_url)
-    print("Description : ", video.description)
-    print("Keywords : ", video.keywords)
-    print("Metadata : ", video.metadata)
+    if video.keywords:
+        print("Keywords : ", video.keywords)
+    if video.metadata:
+        print("Metadata : ", video.metadata)
+    if video.rating:
+        print("Video Rating : ",video.rating)
+    print("Captions : ", video.captions)
+    print("Caption tracks : ", video.caption_tracks)
     #print("fmt streams : ", video.fmt_streams)
     #print("bypass age gate : ", video.bypass_age_gate)
     #print("Video info : ", video.vid_info)
     #print("Initial data : ", video.initial_data)
-    print("Pub date : ", video.publish_date)
 
     #metadata = "metad"
 
@@ -155,8 +156,13 @@ if not debug:
 
 
 if flag:
+    x = 0
     for video in args.video:
+        x += 1
+        y = len(args.video)
         if get_yt_id(video) == None:
             video = "https://youtu.be/" + video
 
+        if verbose:
+            print(f"Processing {x} of {y}")
         extractMeta(video)
