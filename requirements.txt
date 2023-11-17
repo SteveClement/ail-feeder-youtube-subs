@@ -5,7 +5,7 @@ fire==0.5.0
 idna==3.4
 progiter==2.0.0
 pyail==0.0.4
-pytube==15.0.0
+git+https://github.com/felipeucelli/pytube.git@dev
 requests==2.31.0
 six==1.16.0
 termcolor==2.3.0
