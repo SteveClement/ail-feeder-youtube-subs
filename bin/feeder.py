@@ -14,7 +14,7 @@ import download_youtube_subtitle.main as dys
 
 # ConfigParser
 dir_path = os.path.dirname(os.path.realpath(__file__))
-pathConf = os.path.join(dir_path, '../etc/feeder.cfg')
+pathConf = os.path.join(dir_path, "../etc/feeder.cfg")
 
 if os.path.isfile(pathConf):
     config = configparser.ConfigParser()
@@ -23,12 +23,13 @@ else:
     print("[-] No config file found")
     exit(127)
 
-if 'AIL' in config:
-    ail_url = config['AIL']['url']
-    ail_key = config['AIL']['apikey']
-    feeder_uuid = config['AIL']['feeder_uuid']
-    ail_verifycert = config.getboolean('AIL', 'verifycert')
-    ail_feeder = config.getboolean('AIL', 'ail_feeder')
+if "AIL" in config:
+    ail_url = config["AIL"]["url"]
+    ail_key = config["AIL"]["apikey"]
+    feeder_uuid = config["AIL"]["feeder_uuid"]
+    ail_verifycert = config.getboolean("AIL", "verifycert")
+    ail_feeder = config.getboolean("AIL", "ail_feeder")
+
 
 def get_yt_id(url, ignore_playlist=False):
     # Examples:
@@ -37,17 +38,25 @@ def get_yt_id(url, ignore_playlist=False):
     # - https://www.youtube.com/embed/SA2iWivDJiE
     # - https://www.youtube.com/v/SA2iWivDJiE?version=3&amp;hl=en_US
     query = urlparse(url)
-    if query.hostname == 'youtu.be': return query.path[1:]
-    if query.hostname in {'www.youtube.com', 'youtube.com', 'music.youtube.com'}:
+    if query.hostname == "youtu.be":
+        return query.path[1:]
+    if query.hostname in {"www.youtube.com", "youtube.com", "music.youtube.com"}:
         if not ignore_playlist:
-        # use case: get playlist id not current video in playlist
+            # use case: get playlist id not current video in playlist
             with suppress(KeyError):
-                return parse_qs(query.query)['list'][0]
-        if query.path == '/watch': return parse_qs(query.query)['v'][0]
-        if query.path[:7] == '/watch/': return query.path.split('/')[1]
-        if query.path[:7] == '/embed/': return query.path.split('/')[2]
-        if query.path[:3] == '/v/': return query.path.split('/')[2]
-   # returns None for invalid YouTube url
+                return parse_qs(query.query)["list"][0]
+        if query.path == "/watch":
+            return parse_qs(query.query)["v"][0]
+        if query.path[:7] == "/watch/":
+            return query.path.split("/")[1]
+        if query.path[:7] == "/embed/":
+            return query.path.split("/")[2]
+        if query.path[:3] == "/v/":
+            return query.path.split("/")[2]
+
+
+# returns None for invalid YouTube url
+
 
 def extractMeta(video):
     """Extract metadata from a given YT Video"""
@@ -75,14 +84,14 @@ def extractMeta(video):
     if verbose:
         print("[+] Extract Metadata")
 
-    print("Title : ",video.title)
+    print("Title : ", video.title)
     print("Author : ", video.author)
     print("Description : ", video.description)
-    print("Total Length : ",video.length," Seconds")
-    print("Total Views : ",video.views)
+    print("Total Length : ", video.length, " Seconds")
+    print("Total Views : ", video.views)
     print("Publish date : ", video.publish_date)
-    print("Is Age Restricted : ",video.age_restricted)
-    print("Thumbnail Url : ",video.thumbnail_url)
+    print("Is Age Restricted : ", video.age_restricted)
+    print("Thumbnail Url : ", video.thumbnail_url)
     print("Channel ID : ", video.channel_id)
     print("Channel URL : ", video.channel_url)
     if video.keywords:
@@ -90,34 +99,35 @@ def extractMeta(video):
     if video.metadata:
         print("Metadata : ", video.metadata)
     if video.rating:
-        print("Video Rating : ",video.rating)
+        print("Video Rating : ", video.rating)
     print("Captions : ", video.captions)
     print("Caption tracks : ", video.caption_tracks)
-    #print("fmt streams : ", video.fmt_streams)
-    #print("bypass age gate : ", video.bypass_age_gate)
-    #print("Video info : ", video.vid_info)
-    #print("Initial data : ", video.initial_data)
+    # print("fmt streams : ", video.fmt_streams)
+    # print("bypass age gate : ", video.bypass_age_gate)
+    # print("Video info : ", video.vid_info)
+    # print("Initial data : ", video.initial_data)
 
-    #metadata = "metad"
+    # metadata = "metad"
 
-    #for key in metadata.keys():
+    # for key in metadata.keys():
     #    meta[f"yt_subs_feeder:{key}"] = metadata[key]
 
     #    b = bytearray(i)
 
-    #data = b
+    # data = b
 
-    #pushToAIL(data, meta)
+    # pushToAIL(data, meta)
+
 
 def pushToAIL(data, meta):
     """Push json to AIL"""
-    default_encoding = 'UTF-8'
+    default_encoding = "UTF-8"
 
     json_video = dict()
-    json_video['data'] = data
-    json_video['meta'] = meta
+    json_video["data"] = data
+    json_video["meta"] = meta
 
-    source = 'yt-sub-feeder'
+    source = "yt-sub-feeder"
     source_uuid = feeder_uuid
 
     if debug:
@@ -126,14 +136,15 @@ def pushToAIL(data, meta):
         pyail.feed_json_item(data, meta, source, source_uuid, default_encoding)
 
 
-
 #############
 # Arg Parse #
 #############
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-vi', "--video", nargs='+', help="list of images to analyse")
-parser.add_argument("-d", "--debug", help="debug mode (without submission)", action="store_true")
+parser.add_argument("-vi", "--video", nargs="+", help="list of images to analyse")
+parser.add_argument(
+    "-d", "--debug", help="debug mode (without submission)", action="store_true"
+)
 parser.add_argument("-v", "--verbose", help="display more info", action="store_true")
 args = parser.parse_args()
 
