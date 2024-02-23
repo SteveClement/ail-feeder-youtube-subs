@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "ail-feeder-youtube-subs"
+version = "0.1"
+description = "Core of Lacus, usable as a module"
+authors = ["Steve Clement <steve@localhost.lu>"]
+license = "GPL-3"
+repository = "https://github.com/SteveClement/ail-feeder-youtube-subs"
+documentation = "https://ail-feeder-youtube-subs.readthedocs.io/en/latest/"
+
+readme = "README.md"
+
+classifiers = [
+    'License :: OSI Approved :: GNU GPL',
+    'Development Status :: 5 - Production/Stable',
+    'Environment :: Console',
+    'Operating System :: POSIX :: Linux',
+    'Intended Audience :: Science/Research',
+    'Intended Audience :: Telecommunications Industry',
+    'Intended Audience :: Information Technology',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Topic :: Security',
+    'Topic :: Internet',
+    'Topic :: YouTube',
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.31.0"
+Sphinx = [
+   {version = "<7.2", python = "<3.9", optional = true},
+   {version = "^7.2", python = ">=3.9", optional = true}
+]
+
+[tool.poetry.extras]
+docs = ["Sphinx"]
+
+[build-system]
+requires = ["poetry_core"]
+build-backend = "poetry.core.masonry.api"
