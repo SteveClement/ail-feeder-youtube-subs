@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/ail-feeder-youtube-subs/badge/?version=latest)](https://ail-feeder-youtube-subs.readthedocs.io/en/latest/?badge=latest)
+
 # AIL feeder for YouTube Videos
 
 This AIL feeder extract information from YouTube videos such as sbtitles and metadata to collect and feed AIL via its REST API.
